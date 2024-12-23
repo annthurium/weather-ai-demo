@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Model Comparison</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .response-container {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .response-box {
+        flex: 1;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        min-height: 200px;
+      }
+      textarea {
+        width: 100%;
+        min-height: 100px;
+        margin: 10px 0;
+        padding: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>AI Model Comparison</h1>
+    <p>
+      Enter your prompt below to compare responses from two different AI models:
+    </p>
+
+    <textarea
+      id="userPrompt"
+      placeholder="Enter your prompt here..."
+    ></textarea>
+    <button onclick="generateResponses()">Generate Responses</button>
+
+    <div class="response-container">
+      <div class="response-box">
+        <h3>Model 1 Response</h3>
+        <div id="model1Response">Response will appear here...</div>
+      </div>
+      <div class="response-box">
+        <h3>Model 2 Response</h3>
+        <div id="model2Response">Response will appear here...</div>
+      </div>
+    </div>
+
+    <script>
+      async function generateResponses() {
+        const prompt = document.getElementById("userPrompt").value;
+        if (!prompt) {
+          alert("Please enter a prompt");
+          return;
+        }
+
+        document.getElementById("model1Response").innerHTML = "Loading...";
+        document.getElementById("model2Response").innerHTML = "Loading...";
+
+        try {
+          const response = await fetch("/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ prompt: prompt }),
+          });
+
+          const data = await response.json();
+
+          document.getElementById("model1Response").innerHTML =
+            data.model1Response;
+          document.getElementById("model2Response").innerHTML =
+            data.model2Response;
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("model1Response").innerHTML =
+            "Error generating response";
+          document.getElementById("model2Response").innerHTML =
+            "Error generating response";
+        }
+      }
+    </script>
+  </body>
+</html>
