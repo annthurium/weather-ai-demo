@@ -3,27 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Model Comparison</title>
+    <title>Generate a letter of reference</title>
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Student Reference Letter Generator</h1>
-      <form id="referenceForm">
+    <div class="formContainer">
+      <h1>✏️ Student Reference Letter Generator ✏️</h1>
+      <!-- <h2>Forgot your password?</h2> -->
+
+      <form action="/submit" id="generateForm" method="post">
         <div class="form-group">
-          <label for="studentName">Student's Name:</label>
+          <label for="studentName">Student name:</label>
           <input type="text" id="studentName" name="studentName" required />
         </div>
-        <button type="submit">Generate Reference Letter</button>
+        <button type="submit">Generate letter</button>
+        <div class="form-group"></div>
       </form>
       <div id="result" class="result-container" style="white-space: pre-wrap">
-        <!-- Generated letter will appear here -->
-      </div>
     </div>
 
     <script>
       document
-        .getElementById("referenceForm")
+        .getElementById("generateForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
           const studentName = document.getElementById("studentName").value;
