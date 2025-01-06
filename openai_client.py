@@ -14,7 +14,7 @@ ldclient.set_config(Config(os.getenv("LAUNCHDARKLY_SDK_KEY")))
 aiclient = LDAIClient(ldclient.get())
 openai_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-def generate():
+def generate(**kwargs):
     """
     Calls OpenAI's chat completion API to generate some text based on a prompt.
 
@@ -31,7 +31,7 @@ def generate():
         ai_config_key,
         context,
         default_value,
-        {'NAME': "Brad"}
+        kwargs
     )
         messages = [] if config_value.messages is None else config_value.messages
         completion = tracker.track_openai_metrics(
@@ -41,11 +41,12 @@ def generate():
                     messages=[message.to_dict() for message in messages],
                 )
         )
-
-        print("AI Response:", completion.choices[0].message.content)
+        response = completion.choices[0].message.content
         print("Success.")
+        print("AI Response:", response)
+        return response
 
     except Exception as e:
         print(e)
 
-# generate()
+# generate(NAME="Brad")

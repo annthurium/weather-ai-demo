@@ -7,62 +7,50 @@
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <h1>AI Model Comparison</h1>
-    <p>
-      Enter your prompt below to compare responses from two different AI models:
-    </p>
-
-    <textarea
-      id="userPrompt"
-      placeholder="Enter your prompt here..."
-    ></textarea>
-    <button onclick="generateResponses()">Generate Responses</button>
-
-    <div class="response-container">
-      <div class="response-box">
-        <h3>Model 1 Response</h3>
-        <div id="model1Response">Response will appear here...</div>
-      </div>
-      <div class="response-box">
-        <h3>Model 2 Response</h3>
-        <div id="model2Response">Response will appear here...</div>
+    <div class="container">
+      <h1>Student Reference Letter Generator</h1>
+      <form id="referenceForm">
+        <div class="form-group">
+          <label for="studentName">Student's Name:</label>
+          <input type="text" id="studentName" name="studentName" required />
+        </div>
+        <button type="submit">Generate Reference Letter</button>
+      </form>
+      <div id="result" class="result-container">
+        <!-- Generated letter will appear here -->
       </div>
     </div>
 
     <script>
-      async function generateResponses() {
-        const prompt = document.getElementById("userPrompt").value;
-        if (!prompt) {
-          alert("Please enter a prompt");
-          return;
-        }
+      document
+        .getElementById("referenceForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const studentName = document.getElementById("studentName").value;
 
-        document.getElementById("model1Response").innerHTML = "Loading...";
-        document.getElementById("model2Response").innerHTML = "Loading...";
+          const resultDiv = document.getElementById("result");
+          resultDiv.innerHTML = `<p>Generating reference letter for ${studentName}...</p>`;
 
-        try {
-          const response = await fetch("/generate", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ prompt: prompt }),
-          });
+          try {
+            const response = await fetch("/generate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ studentName }),
+            });
 
-          const data = await response.json();
+            const data = await response.json();
 
-          document.getElementById("model1Response").innerHTML =
-            data.model1Response;
-          document.getElementById("model2Response").innerHTML =
-            data.model2Response;
-        } catch (error) {
-          console.error("Error:", error);
-          document.getElementById("model1Response").innerHTML =
-            "Error generating response";
-          document.getElementById("model2Response").innerHTML =
-            "Error generating response";
-        }
-      }
+            if (data.success) {
+              resultDiv.innerHTML = `<p>${data.result}</p>`;
+            } else {
+              resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+            }
+          } catch (error) {
+            resultDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+          }
+        });
     </script>
   </body>
 </html>

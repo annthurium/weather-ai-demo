@@ -7,6 +7,19 @@ import uvicorn
 
 app = FastAPI()
 
+from openai_client import generate
+
+@app.post("/generate")
+async def generate_reference(request: Request):
+    try:
+        form_data = await request.json()
+        student_name = form_data.get('studentName')
+        result = generate(NAME=student_name)
+        return {"success": True, "result": result}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
 # Mount static files directory
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
