@@ -19,6 +19,10 @@ async def generate_reference(request: Request):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
+@app.get("/", response_class=HTMLResponse)
+async def read_root():
+    with open("static/index.html") as f:
+        return HTMLResponse(content=f.read())
 
 # Mount static files directory
 app.mount("/static", StaticFiles(directory="static"), name="static")
