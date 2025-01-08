@@ -24,7 +24,7 @@ def generate(**kwargs):
         ai_config_key = "testing-ai-configs"
         default_value = AIConfig(
         enabled=True,
-        model=ModelConfig(name='gpt-4o-mini'),
+        model=ModelConfig(name='gpt-4o'),
         messages=[],
         )
         config_value, tracker = aiclient.config(
@@ -33,6 +33,7 @@ def generate(**kwargs):
         default_value,
         kwargs
     )
+        print("CONFIG VALUE", config_value)
         messages = [] if config_value.messages is None else config_value.messages
         completion = tracker.track_openai_metrics(
             lambda:
