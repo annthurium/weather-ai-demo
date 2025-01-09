@@ -11,7 +11,7 @@ from ldai.client import LDAIClient, AIConfig, ModelConfig
 
 ldclient.set_config(Config(os.getenv("LAUNCHDARKLY_SDK_KEY")))
 
-aiclient = LDAIClient(ldclient.get())
+ld_ai_client = LDAIClient(ldclient.get())
 openai_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate(**kwargs):
@@ -27,7 +27,7 @@ def generate(**kwargs):
         model=ModelConfig(name='gpt-4o'),
         messages=[],
         )
-        config_value, tracker = aiclient.config(
+        config_value, tracker = ld_ai_client.config(
         ai_config_key,
         context,
         default_value,
