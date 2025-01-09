@@ -21,7 +21,7 @@ def generate(**kwargs):
     """
     context = Context.builder('example-user-key').kind('user').name('Sandy').build()
     try:
-        ai_config_key = "testing-ai-configs"
+        ai_config_key = "model-upgrade"
         default_value = AIConfig(
         enabled=True,
         model=ModelConfig(name='gpt-4o'),
@@ -33,12 +33,14 @@ def generate(**kwargs):
         default_value,
         kwargs
     )
-        print("CONFIG VALUE", config_value)
+        model_name = config_value.model.name
+        print("CONFIG VALUE: ", config_value)
+        print("MODEL NAME: ", model_name)
         messages = [] if config_value.messages is None else config_value.messages
         completion = tracker.track_openai_metrics(
             lambda:
                 openai_client.chat.completions.create(
-                    model=config_value.model.name,
+                    model=model_name,
                     messages=[message.to_dict() for message in messages],
                 )
         )
