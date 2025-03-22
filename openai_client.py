@@ -7,6 +7,7 @@ import ldclient
 from ldclient import Context
 from ldclient.config import Config
 from ldai.client import LDAIClient, AIConfig, ModelConfig
+import uuid
 
 
 ldclient.set_config(Config(os.getenv("LAUNCHDARKLY_SDK_KEY")))
@@ -19,7 +20,9 @@ def generate(**kwargs):
     Calls OpenAI's chat completion API to generate some text based on a prompt.
 
     """
-    context = Context.builder('example-user-key').kind('user').name('Sandy').build()
+    import uuid
+    user_id = str(uuid.uuid4())
+    context = Context.builder(user_id).kind('user').name('Sandy').build()
     try:
         ai_config_key = "weather-assistant"
         default_value = AIConfig(
