@@ -12,8 +12,8 @@ from openai_client import generate
 async def generate_reference(request: Request):
     try:
         form_data = await request.json()
-        student_name = form_data.get('studentName')
-        result = generate(NAME=student_name)
+        location = form_data.get('location')
+        result = generate(LOCATION=location)
         return {"success": True, "result": result}
     except Exception as e:
         return {"success": False, "error": str(e)}

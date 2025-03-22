@@ -21,7 +21,7 @@ def generate(**kwargs):
     """
     context = Context.builder('example-user-key').kind('user').name('Sandy').build()
     try:
-        ai_config_key = "model-upgrade"
+        ai_config_key = "weather-assistant"
         default_value = AIConfig(
         enabled=True,
         model=ModelConfig(name='gpt-4o'),

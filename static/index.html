@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Generate a letter of reference</title>
+    <title>Weather Assistant</title>
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
     <div class="formContainer">
-      <h1>✏️ Student Reference Letter Generator ✏️</h1>
+      <h1>😎 Weather Assistant 🌈</h1>
       <!-- <h2>Forgot your password?</h2> -->
 
       <form action="/submit" id="generateForm" method="post">
         <div class="form-group">
-          <label for="studentName">Student name:</label>
-          <input type="text" id="studentName" name="studentName" required />
+          <label for="location">Location:</label>
+          <input type="text" id="location" name="location" required />
         </div>
-        <button type="submit">Generate letter</button>
+        <button type="submit">Fetch weather report</button>
         <div class="form-group"></div>
       </form>
       <div id="result" class="result-container" style="white-space: pre-wrap">
@@ -27,10 +27,10 @@
         .getElementById("generateForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
-          const studentName = document.getElementById("studentName").value;
+          const location = document.getElementById("location").value;
 
           const resultDiv = document.getElementById("result");
-          resultDiv.innerHTML = `<p>Generating reference letter for ${studentName}...</p>`;
+          resultDiv.innerHTML = `<p>Getting the weather for ${location}...</p>`;
 
           try {
             const response = await fetch("/generate", {
@@ -38,7 +38,7 @@
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ studentName }),
+              body: JSON.stringify({ location }),
             });
 
             const data = await response.json();
